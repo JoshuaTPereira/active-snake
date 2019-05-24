@@ -1,24 +1,15 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This project uses Ruby Version 2.4.5
 
-Things you may want to cover:
+To run the test suite, execute the following commands:
+bundle exec rspec
+yarn run test
 
-* Ruby version
+To create the database, execute the following command:
+rails db:create
 
-* System dependencies
+To initialize the database, execute the following command:
+rails db:schema:load
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+![Build Status](https://codeship.com/projects/343932/status?branch=master)
