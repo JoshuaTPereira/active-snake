@@ -12,4 +12,4 @@ rails db:create
 To initialize the database, execute the following command:
 rails db:schema:load
 
-![Build Status](https://codeship.com/projects/343932/status?branch=master)
+[![Codeship Status for JoshuaTPereira/active-snake](https://app.codeship.com/projects/96939070-5feb-0137-54f5-72c4cd7e8b98/status?branch=master)](https://app.codeship.com/projects/343932)
