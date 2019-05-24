@@ -5,8 +5,8 @@
 This project uses Ruby Version 2.4.5
 
 To run the test suite, execute the following commands:
-bundle exec rspec
-yarn run test
+bundle exec rspec,
+bundle exec yarn run test
 
 To create the database, execute the following command:
 rails db:create
