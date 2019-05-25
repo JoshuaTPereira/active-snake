@@ -9,7 +9,7 @@ bundle exec rspec,
 bundle exec yarn run test
 
 To create the database, execute the following command:
-rails db:create
+bundle exec rails db:create
 
 To initialize the database, execute the following command:
-rails db:schema:load
+bundle exec rails db:schema:load

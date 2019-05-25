@@ -1,7 +1,14 @@
 import React from 'react'
+import { Switch, Route } from 'react-router-dom'
 
-export const App = (props) => {
-  return (<h1>Make It So React</h1>)
+import OpenGamesContainer from '../containers/OpenGamesContainer'
+
+export const App = props => {
+  return (
+    <Switch>
+      <Route exact path='/' component={OpenGamesContainer} />
+    </Switch>
+  )
 }
 
 export default App
