@@ -6,7 +6,7 @@ import OpenGamesContainer from '../containers/OpenGamesContainer'
 export const App = props => {
   return (
     <Switch>
-      <Route exact path='/' component={OpenGamesContainer} />
+      <Route exact path='/games' component={OpenGamesContainer} />
     </Switch>
   )
 }
