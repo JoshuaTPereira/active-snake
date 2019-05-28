@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_27_124043) do
+ActiveRecord::Schema.define(version: 2019_05_28_153906) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2019_05_27_124043) do
     t.integer "row_position", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["column_position", "row_position"], name: "index_coordinates_on_column_position_and_row_position", unique: true
   end
 
   create_table "directions", force: :cascade do |t|
