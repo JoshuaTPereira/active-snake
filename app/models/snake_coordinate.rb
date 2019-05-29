@@ -1,4 +1,7 @@
 class SnakeCoordinate < ApplicationRecord
-  validates :snake_id, presence: true
-  validates :coordinate_id, presence: true
+  validates :snake, presence: true
+  validates :coordinate, presence: true
+
+  belongs_to :coordinate
+  belongs_to :snake
 end
