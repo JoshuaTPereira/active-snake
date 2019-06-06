@@ -10,10 +10,60 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_24_004304) do
+ActiveRecord::Schema.define(version: 2019_05_29_164212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "coordinates", force: :cascade do |t|
+    t.integer "column_position", null: false
+    t.integer "row_position", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["column_position", "row_position"], name: "index_coordinates_on_column_position_and_row_position", unique: true
+  end
+
+  create_table "directions", force: :cascade do |t|
+    t.string "direction", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["direction"], name: "index_directions_on_direction", unique: true
+  end
+
+  create_table "games", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "snake_coordinates", force: :cascade do |t|
+    t.bigint "snake_id", null: false
+    t.bigint "coordinate_id", null: false
+    t.boolean "head", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["coordinate_id"], name: "index_snake_coordinates_on_coordinate_id"
+    t.index ["snake_id"], name: "index_snake_coordinates_on_snake_id"
+  end
+
+  create_table "snakes", force: :cascade do |t|
+    t.bigint "direction_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "game_id", null: false
+    t.bigint "user_id", null: false
+    t.index ["direction_id"], name: "index_snakes_on_direction_id"
+    t.index ["game_id", "user_id"], name: "index_snakes_on_game_id_and_user_id", unique: true
+    t.index ["game_id"], name: "index_snakes_on_game_id"
+    t.index ["user_id"], name: "index_snakes_on_user_id"
+  end
+
+  create_table "user_games", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "game_id", null: false
+    t.index ["game_id", "user_id"], name: "index_user_games_on_game_id_and_user_id", unique: true
+    t.index ["game_id"], name: "index_user_games_on_game_id"
+    t.index ["user_id"], name: "index_user_games_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
