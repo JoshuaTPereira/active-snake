@@ -2,6 +2,7 @@ import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 
 import OpenGamesContainer from '../containers/OpenGamesContainer'
+import NewGameContainer from '../containers/NewGameContainer'
 
 export const App = props => {
   return (
