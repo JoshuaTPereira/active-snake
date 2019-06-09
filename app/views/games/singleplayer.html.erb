@@ -20,7 +20,7 @@ class Snake {
   }
 
   generateFood() {
-    let foodOptions = [];
+    const foodOptions = [];
 
     for (let i = 0; i < this.columnCount; i++) {
       for (let j = 0; j < this.rowCount; j++) {
@@ -43,7 +43,7 @@ class Snake {
   }
 
   getNextVector(direction) {
-    let currentVector = this.snake[0];
+    const currentVector = this.snake[0];
     let nextVector;
 
     if (this.modWall) {
@@ -83,7 +83,7 @@ class Snake {
   }
 
   move(direction) {
-    let nextVector = this.getNextVector(direction);
+    const nextVector = this.getNextVector(direction);
 
     if (nextVector.x < 0 || nextVector.x > this.columnCount - 1 || nextVector.y < 0 || nextVector.y > this.rowCount - 1) {
       //Moved out of bounds
@@ -116,7 +116,7 @@ function setup() {
 }
 
 function draw() {
-  let cellSize = 20;
+  const cellSize = 20;
 
   background(0);
   stroke(255);
