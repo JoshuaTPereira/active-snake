@@ -1,156 +1,158 @@
 <script>
-  Direction = {
-    UP: 0,
-    DOWN: 1,
-    LEFT: 2,
-    RIGHT: 3
+
+const Direction = {
+  UP: 0,
+  DOWN: 1,
+  LEFT: 2,
+  RIGHT: 3
+}
+
+class Snake {
+  constructor(columnCount, rowCount, modWall) {
+    this.columnCount = columnCount;
+    this.rowCount = rowCount;
+    this.modWall = modWall;
+    this.snake = [createVector(Math.floor(columnCount / 2), Math.floor(rowCount / 2))];
+    this.food = this.generateFood();
+
+    this.hasWon = false;
+    this.hasLost = false;
   }
 
-  class Snake {
-    constructor(columnCount, rowCount, modWall) {
-      this.columnCount = columnCount;
-      this.rowCount = rowCount;
-      this.modWall = modWall;
-      this.snake = [createVector(Math.floor(columnCount / 2), Math.floor(rowCount / 2))];
+  generateFood() {
+    let foodOptions = [];
+
+    for (let i = 0; i < this.columnCount; i++) {
+      for (let j = 0; j < this.rowCount; j++) {
+        if (!this.snake.some(vector => vector.x === i && vector.y === j)) {
+          foodOptions.push(createVector(i, j));
+        }
+      }
+    }
+
+    if (foodOptions.length === 0) {
+      this.hasWon = true;
+      return createVector(-1, -1);
+    }
+
+    return foodOptions[Math.floor(Math.random() * foodOptions.length)];
+  }
+
+  mod(x, y) {
+    return ((x % y) + y) % y;
+  }
+
+  getNextVector(direction) {
+    let currentVector = this.snake[0];
+    let nextVector;
+
+    if (this.modWall) {
+      switch (direction) {
+        case (Direction.UP):
+          nextVector = createVector(currentVector.x, this.mod(currentVector.y - 1, this.rowCount));
+        break;
+        case (Direction.DOWN):
+          nextVector = createVector(currentVector.x, this.mod(currentVector.y + 1, this.rowCount));
+        break;
+        case (Direction.LEFT):
+          nextVector = createVector(this.mod(currentVector.x - 1, this.columnCount), currentVector.y);
+        break;
+        case (Direction.RIGHT):
+          nextVector = createVector(this.mod(currentVector.x + 1, this.columnCount), currentVector.y);
+        break;
+      }
+    }
+    else {
+      switch (direction) {
+        case (Direction.UP):
+          nextVector = createVector(currentVector.x, currentVector.y - 1);
+        break;
+        case (Direction.DOWN):
+          nextVector = createVector(currentVector.x, currentVector.y + 1);
+        break;
+        case (Direction.LEFT):
+          nextVector = createVector(currentVector.x - 1, currentVector.y);
+        break;
+        case (Direction.RIGHT):
+          nextVector = createVector(currentVector.x + 1, currentVector.y);
+        break;
+      }
+    }
+
+    return nextVector;
+  }
+
+  move(direction) {
+    let nextVector = this.getNextVector(direction);
+
+    if (nextVector.x < 0 || nextVector.x > this.columnCount - 1 || nextVector.y < 0 || nextVector.y > this.rowCount - 1) {
+      //Moved out of bounds
+      this.hasLost = true;
+    }
+    else if (this.snake.some(vector => vector.x === nextVector.x && vector.y === nextVector.y)) {
+      //Collided with self
+      this.hasLost = true;
+      this.snake.unshift(nextVector);
+      this.snake.pop();
+    }
+    else if (nextVector.x === this.food.x && nextVector.y === this.food.y) {
+      //Consumed food
+      this.snake.unshift(nextVector);
       this.food = this.generateFood();
-
-      this.hasWon = false;
-      this.hasLost = false;
     }
-
-    generateFood() {
-      let foodOptions = [];
-
-      for (let i = 0; i < this.columnCount; i++) {
-        for (let j = 0; j < this.rowCount; j++) {
-          if (!this.snake.some(vector => vector.x === i && vector.y === j)) {
-            foodOptions.push(createVector(i, j));
-          }
-        }
-      }
-
-      if (foodOptions.length === 0) {
-        this.hasWon = true;
-        return createVector(-1, -1);
-      }
-
-      return foodOptions[Math.floor(Math.random() * foodOptions.length)];
+    else {
+      //Moved normally
+      this.snake.unshift(nextVector);
+      this.snake.pop();
     }
+  }
+}
 
-    mod(x, y) {
-      return ((x % y) + y) % y;
-    }
+let snake;
 
-    getNextVector(direction) {
-      let currentVector = this.snake[0];
-      let nextVector;
+function setup() {
+  createCanvas(800, 800);
+  snake = new Snake(30, 30, true);
+}
 
-      if (this.modWall) {
-        switch (direction) {
-          case (Direction.UP):
-            nextVector = createVector(currentVector.x, this.mod(currentVector.y - 1, this.rowCount));
-          break;
-          case (Direction.DOWN):
-            nextVector = createVector(currentVector.x, this.mod(currentVector.y + 1, this.rowCount));
-          break;
-          case (Direction.LEFT):
-            nextVector = createVector(this.mod(currentVector.x - 1, this.columnCount), currentVector.y);
-          break;
-          case (Direction.RIGHT):
-            nextVector = createVector(this.mod(currentVector.x + 1, this.columnCount), currentVector.y);
-          break;
-        }
-      }
-      else {
-        switch (direction) {
-          case (Direction.UP):
-            nextVector = createVector(currentVector.x, currentVector.y - 1);
-          break;
-          case (Direction.DOWN):
-            nextVector = createVector(currentVector.x, currentVector.y + 1);
-          break;
-          case (Direction.LEFT):
-            nextVector = createVector(currentVector.x - 1, currentVector.y);
-          break;
-          case (Direction.RIGHT):
-            nextVector = createVector(currentVector.x + 1, currentVector.y);
-          break;
-        }
-      }
+function draw() {
+  let cellSize = 20;
 
-      return nextVector;
-    }
+  background(0);
+  stroke(255);
 
-    move(direction) {
-      let nextVector = this.getNextVector(direction);
-
-      if (nextVector.x < 0 || nextVector.x > this.columnCount - 1 || nextVector.y < 0 || nextVector.y > this.rowCount - 1) {
-        //Moved out of bounds
-        this.hasLost = true;
-      }
-      else if (this.snake.some(vector => vector.x === nextVector.x && vector.y === nextVector.y)) {
-        //Collided with self
-        this.hasLost = true;
-        this.snake.unshift(nextVector);
-        this.snake.pop();
-      }
-      else if (nextVector.x === this.food.x && nextVector.y === this.food.y) {
-        //Consumed food
-        this.snake.unshift(nextVector);
-        this.food = this.generateFood();
-      }
-      else {
-        //Moved normally
-        this.snake.unshift(nextVector);
-        this.snake.pop();
-      }
+  //Render board
+  fill(0);
+  for (let i = 0; i < snake.columnCount; i++) {
+    for (let j = 0; j < snake.rowCount; j++) {
+      rect(cellSize * i, cellSize * j, cellSize, cellSize);
     }
   }
 
-  let snake;
+  //Render snake
+  fill(0, 255, 0);
+  snake.snake.forEach(cell => rect(cellSize * cell.x, cellSize * cell.y, cellSize, cellSize));
 
-  function setup() {
-    createCanvas(800, 800);
-    snake = new Snake(30, 30, true);
+  //Render food
+  fill(255, 0, 0);
+  rect(cellSize * snake.food.x, cellSize * snake.food.y, cellSize, cellSize);
+}
+
+function keyPressed() {
+  switch (keyCode) {
+    case (UP_ARROW):
+      snake.move(Direction.UP);
+    break;
+    case (DOWN_ARROW):
+      snake.move(Direction.DOWN);
+    break;
+    case (LEFT_ARROW):
+      snake.move(Direction.LEFT);
+    break;
+    case (RIGHT_ARROW):
+      snake.move(Direction.RIGHT);
+    break;
   }
+}
 
-  function draw() {
-    let cellSize = 20;
-
-    background(0);
-    stroke(255);
-
-    //Render board
-    fill(0);
-    for (let i = 0; i < snake.columnCount; i++) {
-      for (let j = 0; j < snake.rowCount; j++) {
-        rect(cellSize * i, cellSize * j, cellSize, cellSize);
-      }
-    }
-
-    //Render snake
-    fill(0, 255, 0);
-    snake.snake.forEach(cell => rect(cellSize * cell.x, cellSize * cell.y, cellSize, cellSize));
-
-    //Render food
-    fill(255, 0, 0);
-    rect(cellSize * snake.food.x, cellSize * snake.food.y, cellSize, cellSize);
-  }
-
-  function keyPressed() {
-    switch (keyCode) {
-      case (UP_ARROW):
-        snake.move(Direction.UP);
-      break;
-      case (DOWN_ARROW):
-        snake.move(Direction.DOWN);
-      break;
-      case (LEFT_ARROW):
-        snake.move(Direction.LEFT);
-      break;
-      case (RIGHT_ARROW):
-        snake.move(Direction.RIGHT);
-      break;
-    }
-  }
 </script>
