@@ -139,8 +139,10 @@ function draw() {
   fill(255, 0, 0);
   rect(cellSize * snake.food.x, cellSize * snake.food.y, cellSize, cellSize);
 
-  snake.move(currentDirection);
-  currentDirection = nextDirection;
+  if (!snake.hasLost) {
+    snake.move(currentDirection);
+    currentDirection = nextDirection;
+  }
 }
 
 function keyPressed() {
