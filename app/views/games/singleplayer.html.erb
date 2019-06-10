@@ -109,6 +109,8 @@ class Snake {
 }
 
 let snake;
+let currentDirection = Direction.RIGHT;
+let nextDirection = Direction.RIGHT;
 
 function setup() {
   createCanvas(800, 800);
@@ -136,21 +138,24 @@ function draw() {
   //Render food
   fill(255, 0, 0);
   rect(cellSize * snake.food.x, cellSize * snake.food.y, cellSize, cellSize);
+
+  snake.move(currentDirection);
+  currentDirection = nextDirection;
 }
 
 function keyPressed() {
   switch (keyCode) {
     case (UP_ARROW):
-      snake.move(Direction.UP);
+      nextDirection = Direction.UP
     break;
     case (DOWN_ARROW):
-      snake.move(Direction.DOWN);
+      nextDirection = Direction.DOWN
     break;
     case (LEFT_ARROW):
-      snake.move(Direction.LEFT);
+      nextDirection = Direction.LEFT
     break;
     case (RIGHT_ARROW):
-      snake.move(Direction.RIGHT);
+      nextDirection = Direction.RIGHT
     break;
   }
 }
