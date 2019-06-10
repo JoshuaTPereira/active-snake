@@ -148,16 +148,24 @@ function draw() {
 function keyPressed() {
   switch (keyCode) {
     case (UP_ARROW):
-      nextDirection = Direction.UP
+      if (snake.snake.length === 1 || currentDirection != Direction.DOWN) {
+        nextDirection = Direction.UP;
+      }
     break;
     case (DOWN_ARROW):
-      nextDirection = Direction.DOWN
+      if (snake.snake.length === 1 || currentDirection != Direction.UP) {
+        nextDirection = Direction.DOWN;
+      }
     break;
     case (LEFT_ARROW):
-      nextDirection = Direction.LEFT
+      if (snake.snake.length === 1 || currentDirection != Direction.RIGHT) {
+        nextDirection = Direction.LEFT;
+      }
     break;
     case (RIGHT_ARROW):
-      nextDirection = Direction.RIGHT
+      if (snake.snake.length === 1 || currentDirection != Direction.LEFT) {
+        nextDirection = Direction.RIGHT;
+      }
     break;
   }
 }
