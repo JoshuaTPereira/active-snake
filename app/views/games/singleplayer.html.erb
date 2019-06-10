@@ -109,6 +109,7 @@ class Snake {
 }
 
 let snake;
+const speed = 3;
 let currentDirection = Direction.RIGHT;
 let nextDirection = Direction.RIGHT;
 
@@ -139,9 +140,9 @@ function draw() {
   fill(255, 0, 0);
   rect(cellSize * snake.food.x, cellSize * snake.food.y, cellSize, cellSize);
 
-  if (!snake.hasLost) {
-    snake.move(currentDirection);
+  if (!snake.hasLost && frameCount % speed === 0) {
     currentDirection = nextDirection;
+    snake.move(currentDirection);
   }
 }
 
