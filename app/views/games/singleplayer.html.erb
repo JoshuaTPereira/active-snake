@@ -118,18 +118,26 @@ class Snake {
 }
 
 let snake;
-const speed = 3;
 let currentDirection = Direction.RIGHT;
 let nextDirection = Direction.RIGHT;
 
+const columnCount = 30;
+const rowCount = 30;
+const modWall = true
+
+const speed = 1;
+const cellSize = 20;
+const canvasWidth = 600;
+const canvasHeight = 600;
+const xOffset = (canvasWidth - (columnCount * cellSize)) / 2
+const yOffset = (canvasHeight - (rowCount * cellSize)) / 2
+
 function setup() {
-  createCanvas(800, 800);
-  snake = new Snake(30, 30, true);
+  snake = new Snake(columnCount, rowCount, modWall);
+  createCanvas(canvasWidth, canvasHeight);
 }
 
 function draw() {
-  const cellSize = 20;
-
   background(0);
   stroke(255);
 
@@ -137,17 +145,17 @@ function draw() {
   fill(0);
   for (let i = 0; i < snake.columnCount; i++) {
     for (let j = 0; j < snake.rowCount; j++) {
-      rect(cellSize * i, cellSize * j, cellSize, cellSize);
+      rect(cellSize * i + xOffset, cellSize * j + yOffset, cellSize, cellSize);
     }
   }
 
   //Render snake
   fill(0, 255, 0);
-  snake.snake.forEach(cell => rect(cellSize * cell.x, cellSize * cell.y, cellSize, cellSize));
+  snake.snake.forEach(cell => rect(cellSize * cell.x + xOffset, cellSize * cell.y + yOffset, cellSize, cellSize));
 
   //Render food
   fill(255, 0, 0);
-  rect(cellSize * snake.food.x, cellSize * snake.food.y, cellSize, cellSize);
+  rect(cellSize * snake.food.x + xOffset, cellSize * snake.food.y + yOffset, cellSize, cellSize);
 
   if (!snake.hasLost && frameCount % speed === 0) {
     currentDirection = nextDirection;
