@@ -86,22 +86,31 @@ class Snake {
     const nextVector = this.getNextVector(direction);
 
     if (nextVector.x < 0 || nextVector.x > this.columnCount - 1 || nextVector.y < 0 || nextVector.y > this.rowCount - 1) {
-      //Moved out of bounds
+      //Will move out of bounds
       this.hasLost = true;
     }
     else if (this.snake.some(vector => vector.x === nextVector.x && vector.y === nextVector.y)) {
-      //Collided with self
-      this.hasLost = true;
-      this.snake.unshift(nextVector);
-      this.snake.pop();
+      const tail = this.snake[this.snake.length - 1];
+
+      if (nextVector.x === tail.x && nextVector.y === tail.y) {
+        //Will collide with tail, but tail will be out of the way next frame
+        this.snake.unshift(nextVector);
+        this.snake.pop();
+      }
+      else {
+        //Will collide with self
+        this.hasLost = true;
+        this.snake.unshift(nextVector);
+        this.snake.pop();
+      }
     }
     else if (nextVector.x === this.food.x && nextVector.y === this.food.y) {
-      //Consumed food
+      //Will consume food
       this.snake.unshift(nextVector);
       this.food = this.generateFood();
     }
     else {
-      //Moved normally
+      //Will move normally
       this.snake.unshift(nextVector);
       this.snake.pop();
     }
