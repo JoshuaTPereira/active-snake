@@ -4,4 +4,7 @@ class GamesController < ApplicationController
 
   def new
   end
+
+  def singleplayer
+  end
 end
