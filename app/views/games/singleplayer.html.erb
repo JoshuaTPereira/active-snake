@@ -123,14 +123,14 @@ let nextDirection = Direction.RIGHT;
 
 const columnCount = 30;
 const rowCount = 30;
-const modWall = true
+const modWall = true;
 
 const speed = 1;
 const cellSize = 20;
 const canvasWidth = 600;
 const canvasHeight = 600;
-const xOffset = (canvasWidth - (columnCount * cellSize)) / 2
-const yOffset = (canvasHeight - (rowCount * cellSize)) / 2
+const xOffset = (canvasWidth - (columnCount * cellSize)) / 2;
+const yOffset = (canvasHeight - (rowCount * cellSize)) / 2;
 
 function setup() {
   snake = new Snake(columnCount, rowCount, modWall);
@@ -185,6 +185,11 @@ function keyPressed() {
         nextDirection = Direction.RIGHT;
       }
     break;
+  }
+  if (key === ' ') {
+    currentDirection = Direction.RIGHT;
+    nextDirection = Direction.RIGHT;
+    snake = new Snake(columnCount, rowCount, modWall);
   }
 }
 
